@@ -19,6 +19,7 @@
 
                ;; HTML Template
                :djula
+               :cl-markup
 
                ;; for DB
                :datafly

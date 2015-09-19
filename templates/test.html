@@ -1,0 +1,13 @@
+{% extends "layouts/default.html" %}
+{% block title %}Welcome to Caveman2{% endblock %}
+{% block content %}
+<div id="main">
+  test-var = {{test-var}}
+  <ul>
+    {% for elem in test-list %}
+      <li>{{elem}}</li>
+    {% endfor %}
+  </ul>
+  test
+</div>
+{% endblock %}
