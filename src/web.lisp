@@ -10,8 +10,12 @@
   (:export :*web*))
 (in-package :caveman-sample.web)
 
-(import 'cl-markup:html5)
-(import 'cl-markup:markup)
+(defmacro call-template (name &rest rest)
+  `(,(intern (string-upcase
+              (format nil "~A-html" name))
+             (string-upcase
+              (format nil "caveman-sample.templates.~A" name)))
+     ,@rest))
 
 ;; for @route annotation
 (syntax:use-syntax :annot)
@@ -34,23 +38,10 @@
           `(:test-var 1234
             :test-list (1 2 3))))
 
-(defmacro with-markup-to-string (&body body)
-  (let ((str (gensym)))
-    `(with-output-to-string (,str)
-       (let ((cl-markup:*output-stream* ,str))
-         ,@body))))
-
-(defun test (t-str f-str)
-  (with-markup-to-string
-    (html5
-     (:head
-      (:title "test"))
-     (:body
-      (dotimes (i 20)
-        (markup (:div (if (evenp i) t-str f-str))))))))
-
-(defroute "/test-who" ()
-  (test "a" "b"))
+(defroute "/test-markdown" ()
+  (call-template index
+   :t-str "true"
+   :f-str "false"))
 
 ;;
 ;; Error pages
