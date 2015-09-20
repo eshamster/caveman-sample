@@ -31,14 +31,6 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (render #P"index.html"))
-
-(defroute "/test" ()
-  (render #P"test.html"
-          `(:test-var 1234
-            :test-list (1 2 3))))
-
-(defroute "/test-markdown" ()
   (call-template index
    :t-str "true"
    :f-str "false"))
