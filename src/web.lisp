@@ -10,6 +10,13 @@
   (:export :*web*))
 (in-package :caveman-sample.web)
 
+(defmacro call-template (name &rest rest)
+  `(,(intern (string-upcase
+              (format nil "~A-html" name))
+             (string-upcase
+              (format nil "caveman-sample.templates.~A" name)))
+     ,@rest))
+
 ;; for @route annotation
 (syntax:use-syntax :annot)
 
@@ -24,7 +31,9 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (render #P"index.html"))
+  (call-template index
+   :t-str "true"
+   :f-str "false"))
 
 ;;
 ;; Error pages

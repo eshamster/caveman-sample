@@ -19,6 +19,7 @@
 
                ;; HTML Template
                :djula
+               :cl-markup
 
                ;; for DB
                :datafly
@@ -29,6 +30,11 @@
                  (:file "web" :depends-on ("view"))
                  (:file "view" :depends-on ("config"))
                  (:file "db" :depends-on ("config"))
-                 (:file "config"))))
+                 (:file "config"))
+                :depends-on ("templates"))
+               (:module "templates"
+                :components
+                ((:file "utils")
+                 (:file "index" :depends-on ("utils")))))
   :description ""
   :in-order-to ((test-op (load-op caveman-sample-test))))
