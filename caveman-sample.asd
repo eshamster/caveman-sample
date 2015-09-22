@@ -35,6 +35,7 @@
                (:module "templates"
                 :components
                 ((:file "utils")
-                 (:file "index" :depends-on ("utils")))))
+                 (:file "index" :depends-on ("utils"))
+                 (:file "test-angular" :depends-on ("utils")))))
   :description ""
   :in-order-to ((test-op (load-op caveman-sample-test))))
