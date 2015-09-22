@@ -9,7 +9,8 @@ a:link {
   text-decoration: none;
 }
 a:visited {
-  color: #485270;
+  color: purple;
+  font-weight: 600;
 }
 a:hover {
   color: #b83800;
@@ -18,4 +19,31 @@ a:hover {
 
 #main {
   text-align: center;
+}
+
+dl {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+dt,dd {
+  border: solid 1px black;
+  text-align: left;
+}
+
+dt {
+  margin: auto;
+  background-color: #faf;
+}
+
+dd {
+  overflow: hidden;
+  margin: auto;
+  background-color: #fef;
+}
+
+dd.not-selected {
+  height: 0px;
+  border: none;
 }

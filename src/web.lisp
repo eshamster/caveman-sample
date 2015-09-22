@@ -35,6 +35,13 @@
    :t-str "true"
    :f-str "false"))
 
+(defroute "/test-angular" ()
+  (call-template test-angular))
+
+(defroute "/test.json" ()
+  (render-json `((:name "esh" :mail "hamgoostar@gmail.com")
+                 (:name "ham" :mail "hamster@example.com"))))
+
 ;;
 ;; Error pages
 
