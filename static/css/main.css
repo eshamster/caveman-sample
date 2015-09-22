@@ -21,20 +21,29 @@ a:hover {
   text-align: center;
 }
 
-table {
-    width: 100%;
+dl {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
-th,td {
-    border: solid 1px black;
+dt,dd {
+  border: solid 1px black;
+  text-align: left;
 }
 
-th {
-  text-align: center;
+dt {
+  margin: auto;
   background-color: #faf;
 }
 
-td {
-  text-align: left;
+dd {
+  overflow: hidden;
+  margin: auto;
   background-color: #fef;
+}
+
+dd.not-selected {
+  height: 0px;
+  border: none;
 }
