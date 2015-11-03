@@ -17,7 +17,8 @@
       (:link :rel "stylesheet" :type "text/css" :href "css/main.css"))
      (:body
       (:ul
-       (:li (:a :href "test-angular" "Test Angular.js")))
+       (:li (:a :href "test-angular" "Test Angular.js"))
+       (:li (:a :href "test-three" "Test Three.js")))
       (:table
        (dotimes (i 20)
          (markup (:tr (:td (if (evenp i) t-str f-str))))))))))

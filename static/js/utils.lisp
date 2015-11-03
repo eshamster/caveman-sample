@@ -6,7 +6,9 @@
   (:shadow :sb-debug
            :var)
   (:export :setf-with
-           :load-ps))
+           :load-ps
+           :defun+ps
+           :with-import-ps-func))
 (in-package :caveman-sample.js.utils)
 
 (defmacro+ps setf-with (target &body rest)
@@ -19,6 +21,45 @@
                  (nreverse result))))
     `(with-slots ,(extract-slots nil rest) ,target
        (setf ,@rest))))
+
+(defun intern-ub (sym)
+  (intern (format nil "~A_" (symbol-name sym))))
+
+(defmacro defun+ps (name args &body body)
+  (let ((name_ (intern-ub name)))
+    `(defun ,name_ ()
+       (ps:ps
+         (defun ,name ,args
+           ,@body)))))
+
+#|
+(defmacro defun+ps (name args &body body)
+  (let ((name_ (intern-ub name)))
+    `(progn
+       (defun ,name ,args
+         ,@body)
+       (defun ,name_ ()
+         (ps:ps
+           (defun ,name ,args
+             ,@body))))))
+|#
+
+(defun interleave (lst delim)
+  (labels ((rec (result rest)
+             (if (null rest)
+                 result
+                 (rec (append result (list (car rest) delim))
+                      (cdr rest)))))
+    (rec nil lst)))
+
+(defmacro with-import-ps-def (ps-lst &body body)
+  `(concatenate 'string
+                ,@ (interleave (mapcar (lambda (elem) (list (intern-ub elem)))
+                                       ps-lst)
+                                                             "
+")
+                                   (ps:ps ,@body)))
+
 
 (defun make-js-path (name &key (for-load nil))
   (format nil "~Ajs/_~A.js"
