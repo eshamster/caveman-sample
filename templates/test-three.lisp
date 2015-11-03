@@ -20,4 +20,6 @@
             (:script :src (load-ps "test-three") nil))
            (:body
             (:div (:a :href "/" "Top"))
+            (:br)
+            (:div "キーを押すと最初の位置に戻ります")
             (:br)))))

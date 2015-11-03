@@ -32,18 +32,6 @@
          (defun ,name ,args
            ,@body)))))
 
-#|
-(defmacro defun+ps (name args &body body)
-  (let ((name_ (intern-ub name)))
-    `(progn
-       (defun ,name ,args
-         ,@body)
-       (defun ,name_ ()
-         (ps:ps
-           (defun ,name ,args
-             ,@body))))))
-|#
-
 (defun interleave (lst delim)
   (labels ((rec (result rest)
              (if (null rest)
