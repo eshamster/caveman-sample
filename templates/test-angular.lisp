@@ -6,6 +6,8 @@
   (:import-from :cl-markup
                 :html5
                 :markup)
+  (:import-from :caveman-sample.js.utils
+                :load-ps)
   (:export :test-angular-html))
 (in-package caveman-sample.templates.test-angular)
 
@@ -16,7 +18,7 @@
             (:title "Test AngularJS")
             (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js" nil)
             (:script :src "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" nil)
-            (:script :src "js/test-angular.js" nil)
+            (:script :src (load-ps "test-angular") nil)
             (:link :rel "stylesheet" :type "text/css" :href "css/main.css"))
            (:body
             (:div (:a :href "/" "Top"))

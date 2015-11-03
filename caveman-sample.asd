@@ -11,6 +11,7 @@
                :lack
                :caveman2
                :envy
+               :anaphora
                :cl-ppcre
                :uiop
 
@@ -20,6 +21,9 @@
                ;; HTML Template
                :djula
                :cl-markup
+
+               ;; for static JS
+               :parenscript
 
                ;; for DB
                :datafly
@@ -32,10 +36,15 @@
                  (:file "db" :depends-on ("config"))
                  (:file "config"))
                 :depends-on ("templates"))
+               (:module "static/js"
+                :components
+                ((:file "utils")
+                 (:file "test-angular" :depends-on ("utils"))))
                (:module "templates"
                 :components
                 ((:file "utils")
                  (:file "index" :depends-on ("utils"))
-                 (:file "test-angular" :depends-on ("utils")))))
+                 (:file "test-angular" :depends-on ("utils"))) 
+                :depends-on ("static/js")))
   :description ""
   :in-order-to ((test-op (load-op caveman-sample-test))))
