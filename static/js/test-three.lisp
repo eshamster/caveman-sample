@@ -5,10 +5,10 @@
         :parenscript)
   (:shadow :sb-debug
            :var)
-  (:import-from :caveman-sample.js.utils
+  (:import-from :ps-experiment
                 :setf-with
                 :defun.ps
-                :with-import-ps-def))
+                :with-use-ps-pack))
 (in-package :caveman-sample.js.test-three)
 
 (defun.ps rotate-mesh (mesh)
@@ -49,7 +49,7 @@
         (render-loop)))))
 
 (defun js-main ()
-  (with-import-ps-def (rotate-mesh main)
+  (with-use-ps-pack (this)
     (defvar is-keydown false)
     (window.add-event-listener "keydown" (lambda (e) (setf is-keydown true)))
     (window.add-event-listener "keyup" (lambda (e) (setf is-keydown false)))
