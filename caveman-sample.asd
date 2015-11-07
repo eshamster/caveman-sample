@@ -24,6 +24,7 @@
 
                ;; for static JS
                :parenscript
+               :ps-experiment
 
                ;; for DB
                :datafly

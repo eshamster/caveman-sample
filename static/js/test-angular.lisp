@@ -5,7 +5,7 @@
         :parenscript)
   (:shadow :sb-debug
            :var)
-  (:import-from :caveman-sample.js.utils
+  (:import-from :ps-experiment
                 :setf-with
                 :ps.))
 (in-package :caveman-sample.js.test-angular)

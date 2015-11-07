@@ -1,0 +1,3 @@
+[submodule "static/js/ps-experiment"]
+	path = static/js/ps-experiment
+	url = https://github.com/eshamster/ps-experiment.git
