@@ -8,7 +8,10 @@
   (:export :setf-with
            :load-ps
            :defun+ps
-           :with-import-ps-func))
+           :defun.ps
+           :with-import-ps-func
+           :ps.
+           :defmacro.ps))
 (in-package :caveman-sample.js.utils)
 
 (defmacro+ps setf-with (target &body rest)
@@ -22,15 +25,53 @@
     `(with-slots ,(extract-slots nil rest) ,target
        (setf ,@rest))))
 
+
+(defun replace-dot-sep (elem)
+  (if (symbolp elem)
+      (let ((name (symbol-name elem))
+            (pack-name (package-name (symbol-package elem))))
+        (cond ((and (> (length name) 1)
+                    (string= name "!!" :start1 0 :end1 2))
+               (intern (subseq name 2) pack-name))
+              ((ppcre:scan "\\." name)
+               `(@ ,@(mapcar (lambda (x) (intern x pack-name))
+                                (ppcre:split "\\." name))))
+              (t elem)))
+      elem))
+
+(defun replace-dot-in-tree (tree)
+  (labels ((rec (rest)
+             (let (result)
+               (when rest
+                 (dolist (elem rest)
+                   (push (if (listp elem)
+                             (rec elem)
+                             (replace-dot-sep elem))
+                         result)))
+               (nreverse result))))
+    (rec tree)))
+
+(defmacro ps. (&body body)
+  `(ps ,@(replace-dot-in-tree body)))
+
+(defmacro defmacro.ps (name args &body body)
+  `(defmacro+ps ,name ,args
+     ,@(replace-dot-in-tree body)))
+
+
 (defun intern-ub (sym)
   (intern (format nil "~A_" (symbol-name sym))))
 
 (defmacro defun+ps (name args &body body)
   (let ((name_ (intern-ub name)))
     `(defun ,name_ ()
-       (ps:ps
+       (ps
          (defun ,name ,args
            ,@body)))))
+
+(defmacro defun.ps (name args &body body)
+  `(defun+ps ,name ,args
+     ,@(replace-dot-in-tree body)))
 
 (defun interleave (lst delim)
   (labels ((rec (result rest)
@@ -46,7 +87,7 @@
                                        ps-lst)
                                                              "
 ")
-                                   (ps:ps ,@body)))
+                                   (ps ,@body)))
 
 
 (defun make-js-path (name &key (for-load nil))
@@ -70,6 +111,7 @@
                            :direction :output
                            :if-exists :supersede
                            :if-does-not-exist :create)
+        (format t "(re-)load js: ~A" name)
         (format out (funcall (intern "JS-MAIN"
                                      (string-upcase
                                       (format nil "~A.js.~A"
