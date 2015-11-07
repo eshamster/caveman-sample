@@ -6,11 +6,12 @@
   (:shadow :sb-debug
            :var)
   (:import-from :caveman-sample.js.utils
-                :setf-with))
+                :setf-with
+                :ps.))
 (in-package :caveman-sample.js.test-angular)
 
 (defun js-main ()
-  (ps
+  (ps.
     (chain
      (angular.module "testApp" '())
      (controller

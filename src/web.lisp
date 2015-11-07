@@ -38,6 +38,9 @@
 (defroute "/test-angular" ()
   (call-template test-angular))
 
+(defroute "/test-three" ()
+  (call-template test-three))
+
 (defroute "/test.json" ()
   (render-json `((:name "esh" :mail "hamgoostar@gmail.com")
                  (:name "ham" :mail "hamster@example.com"))))
