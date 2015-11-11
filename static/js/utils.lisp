@@ -12,13 +12,11 @@
   (asdf:system-source-file (asdf:find-system :caveman-sample)))
 
 (defun make-js-path (name &key (for-load nil))
-  (print 'xxxxxxxxxxxxx)
-  (print
-   (if for-load
-       (format nil "js/_~A.js" name)
-       (merge-pathnames
-        (format nil "static/js/_~A.js" name)
-        (asd-path)))))
+  (if for-load
+      (format nil "js/_~A.js" name)
+      (merge-pathnames
+       (format nil "static/js/_~A.js" name)
+       (asd-path))))
 
 (defun make-cl-path (name)
   (merge-pathnames
@@ -32,7 +30,6 @@
            (file-write-date (make-cl-path name))))))
 
 (defun load-ps (name)
-  (print (is-js-older name))
   (if (is-js-older name)
       (with-open-file (out (make-js-path name)
                            :direction :output
