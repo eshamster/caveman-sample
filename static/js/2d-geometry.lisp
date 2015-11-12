@@ -8,6 +8,25 @@
                 :defun.ps))
 (in-package :caveman-sample.js.2d-geometry)
 
+; Without eval-when, "defun"s are compiled after "defmacro+ps"
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun make-push-vertices (vertices raw-vertex-lst)
+    `((@ ,vertices push) ,@(mapcar (lambda (v)
+                                     `(new (#j.THREE.Vector3# ,@v)))
+                                   raw-vertex-lst))))
+
+(defmacro+ps def-wired-geometry (name args &body body)
+  (with-ps-gensyms
+   (geometry vertices material)
+   `(defun.ps ,name (&key ,@args color z)
+      (let* ((,geometry (new (#j.THREE.Geometry#)))
+             (,vertices (@ ,geometry vertices))
+             (,material (new (#j.THREE.LineBasicMaterial# (create :color color))))) 
+        (macrolet ((push-vertices (&rest rest)
+                                  (make-push-vertices ',vertices rest)))
+          ,@body)
+        (new (#j.THREE.Line# ,geometry ,material))))))
+
 (defun.ps array-2d-to-vector-3d (src z)
   (new (#j.THREE.Vector3# (aref src 0)
                           (aref src 1)
@@ -26,11 +45,7 @@
                 (new (#j.THREE.Face3# 2 3 0)))
     (new (#j.THREE.Mesh# geometry material))))
 
-(defun.ps make-line (&key pos-a pos-b (color 0x000000) (z 0))
-  (let* ((geometry (new (#j.THREE.Geometry#)))
-         (vertices geometry.vertices)
-         (material (new (#j.THREE.LineBasicMaterial# (create :color color)))))
-    (vertices.push (array-2d-to-vector-3d pos-a z)
-                   (array-2d-to-vector-3d pos-b z))
-    (new (#j.THREE.Line# geometry material))))
+(def-wired-geometry make-line (pos-a pos-b)
+  (push-vertices ((aref pos-a 0) (aref pos-a 1) z)
+                 ((aref pos-b 0) (aref pos-b 1) z)))
 
