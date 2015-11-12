@@ -8,6 +8,8 @@
   (:export :load-ps))
 (in-package :caveman-sample.js.utils)
 
+(defparameter *force-reload-js* t)
+
 (defun asd-path ()
   (asdf:system-source-file (asdf:find-system :caveman-sample)))
 
@@ -30,7 +32,8 @@
            (file-write-date (make-cl-path name))))))
 
 (defun load-ps (name)
-  (if (is-js-older name)
+  (if (or *force-reload-js*
+          (is-js-older name))
       (with-open-file (out (make-js-path name)
                            :direction :output
                            :if-exists :supersede

@@ -45,6 +45,7 @@
     (let ((light (new (#j.THREE.DirectionalLight# 0xffffff))))
       (light.position.set 0 0.7 0.7)
       (scene.add light))
+    (scene.add (make-line :pos-a '(0 0) :pos-b '(600 400) :color 0x00ff00 :z 1))
     (let* ((geometry (new (#j.THREE.CubeGeometry# 1190 790 1)))
            (material (new (#j.THREE.MeshPhongMaterial# (create :color 0xff0000))))
            (mesh (new (#j.THREE.Mesh# geometry material))))
@@ -56,7 +57,8 @@
         (render-loop)))))
 
 (defun js-main ()
-  (with-use-ps-pack (this)
+  (with-use-ps-pack (:caveman-sample.js.2d-geometry
+                     :this)
     (defvar is-keydown false)
     (window.add-event-listener "keydown" (lambda (e) (setf is-keydown true)))
     (window.add-event-listener "keyup" (lambda (e) (setf is-keydown false)))
