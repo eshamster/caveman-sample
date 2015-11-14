@@ -12,8 +12,11 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun make-push-vertices (vertices raw-vertex-lst)
     `((@ ,vertices push) ,@(mapcar (lambda (v)
-                                     `(new (#j.THREE.Vector3# ,@v)))
+                                     `(new (#j.THREE.Vector3# ,@(append v '(z)))))
                                    raw-vertex-lst))))
+
+(defun.ps to-rad (degree)
+  (/ (* degree pi) 180))
 
 (defmacro+ps def-wired-geometry (name args &body body)
   (with-ps-gensyms
@@ -23,7 +26,7 @@
              (,vertices (@ ,geometry vertices))
              (,material (new (#j.THREE.LineBasicMaterial# (create :color color))))) 
         (macrolet ((push-vertices (&rest rest)
-                                  (make-push-vertices ',vertices rest)))
+                     (make-push-vertices ',vertices rest)))
           ,@body)
         (new (#j.THREE.Line# ,geometry ,material))))))
 
@@ -46,6 +49,14 @@
     (new (#j.THREE.Mesh# geometry material))))
 
 (def-wired-geometry make-line (pos-a pos-b)
-  (push-vertices ((aref pos-a 0) (aref pos-a 1) z)
-                 ((aref pos-b 0) (aref pos-b 1) z)))
+  (push-vertices ((aref pos-a 0) (aref pos-a 1))
+                 ((aref pos-b 0) (aref pos-b 1))))
 
+(def-wired-geometry make-wired-rect (width height)
+  (push-vertices (0 0) (width 0) (width height) (0 height) (0 0)))
+
+(def-wired-geometry make-wired-regular-polygon (r n start-angle)
+  (dotimes (i (1+ n))
+    (let ((angle (to-rad (+ (/ (* 360 i) n) start-angle))))
+      (push-vertices ((+ r (* r (cos angle)))
+                      (+ r (* r (sin angle))))))))
