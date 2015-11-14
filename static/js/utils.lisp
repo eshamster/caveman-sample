@@ -10,20 +10,16 @@
 
 (defparameter *force-reload-js* t)
 
-(defun asd-path ()
-  (asdf:system-source-file (asdf:find-system :caveman-sample)))
+(defun make-full-path (path)
+  (asdf:system-relative-pathname :caveman-sample path))
 
 (defun make-js-path (name &key (for-load nil))
   (if for-load
       (format nil "js/_~A.js" name)
-      (merge-pathnames
-       (format nil "static/js/_~A.js" name)
-       (asd-path))))
+      (make-full-path (format nil "static/js/_~A.js" name))))
 
 (defun make-cl-path (name)
-  (merge-pathnames
-   (format nil "static/js/~A.lisp" name)
-   (asd-path)))
+  (make-full-path (format nil "static/js/~A.lisp" name)))
 
 (defun is-js-older (name)
   (let ((js-path (make-js-path name)))
