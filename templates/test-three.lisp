@@ -13,9 +13,9 @@
 
 (defun test-three-html ()
   (with-markup-to-string
-    (html5 :ng-app "testApp"
-           (:head
+    (html5 (:head
             (:title "Test ThreeJs")
+            (:meta :charset "UTF-8")
             (:script :src "https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js" nil)
             (:script :src (load-ps "test-three") nil))
            (:body

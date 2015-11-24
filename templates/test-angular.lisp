@@ -15,6 +15,7 @@
   (with-markup-to-string
     (html5 :ng-app "testApp"
            (:head
+            (:meta :charset "UTF-8")
             (:title "Test AngularJS")
             (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js" nil)
             (:script :src "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" nil)

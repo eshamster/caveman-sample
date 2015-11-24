@@ -13,6 +13,7 @@
   (with-markup-to-string
     (html5
      (:head
+      (:meta :charset "UTF-8")
       (:title "test")
       (:link :rel "stylesheet" :type "text/css" :href "css/main.css"))
      (:body
