@@ -5,8 +5,11 @@
         :parenscript)
   (:import-from :ps-experiment
                 :defmacro.ps
-                :defun.ps))
+                :defun.ps
+                :enable-ps-experiment-syntax))
 (in-package :caveman-sample.js.2d-geometry)
+
+(enable-ps-experiment-syntax)
 
 ; Without eval-when, "defun"s are compiled after "defmacro+ps"
 (eval-when (:compile-toplevel :load-toplevel :execute)
