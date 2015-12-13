@@ -4,14 +4,14 @@
         :cl-ppcre
         :parenscript)
   (:import-from :ps-experiment
-                :defmacro.ps
+                :defmacro.ps+
                 :defun.ps
                 :enable-ps-experiment-syntax))
 (in-package :caveman-sample.js.2d-geometry)
 
 (enable-ps-experiment-syntax)
 
-; Without eval-when, "defun"s are compiled after "defmacro+ps"
+; Without eval-when, "defun"s are compiled after "defmacro.ps"
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun make-push-vertices (vertices raw-vertex-lst)
     `((@ ,vertices push) ,@(mapcar (lambda (v)
@@ -25,7 +25,7 @@
 (defun.ps to-rad (degree)
   (/ (* degree pi) 180))
 
-(defmacro+ps def-wired-geometry (name args &body body)
+(defmacro.ps+ def-wired-geometry (name args &body body)
   (with-ps-gensyms (geometry vertices material)
     `(defun.ps ,name (&key ,@args color z)
        (let* ((,geometry (new (#j.THREE.Geometry#)))
@@ -36,9 +36,9 @@
            ,@body)
          (new (#j.THREE.Line# ,geometry ,material))))))
 
-(defmacro.ps def-solid-geomery (name args &body body)
+(defmacro.ps+ def-solid-geomery (name args &body body)
   (with-ps-gensyms (geometry vertices faces material)
-    `(!!defun.ps ,name (&key ,@args color z)
+    `(defun.ps ,name (&key ,@args color z)
        (let* ((,geometry (new (#j.THREE.Geometry#)))
               (,vertices (@ ,geometry vertices))
               (,faces (@ ,geometry faces))
