@@ -8,13 +8,18 @@
   (:export :load-ps))
 (in-package :caveman-sample.js.utils)
 
+(defparameter *force-reload-js* t)
+
+(defun make-full-path (path)
+  (asdf:system-relative-pathname :caveman-sample path))
+
 (defun make-js-path (name &key (for-load nil))
-  (format nil "~Ajs/_~A.js"
-          (if for-load "" "static/")
-          name))
+  (if for-load
+      (format nil "js/_~A.js" name)
+      (make-full-path (format nil "static/js/_~A.js" name))))
 
 (defun make-cl-path (name)
-  (format nil "static/js/~A.lisp" name))
+  (make-full-path (format nil "static/js/~A.lisp" name)))
 
 (defun is-js-older (name)
   (let ((js-path (make-js-path name)))
@@ -23,8 +28,8 @@
            (file-write-date (make-cl-path name))))))
 
 (defun load-ps (name)
-  (print (is-js-older name))
-  (if (is-js-older name)
+  (if (or *force-reload-js*
+          (is-js-older name))
       (with-open-file (out (make-js-path name)
                            :direction :output
                            :if-exists :supersede
