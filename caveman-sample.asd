@@ -43,6 +43,7 @@
                 ((:file "utils")
                  (:file "test-angular" :depends-on ("utils"))
                  (:file "2d-geometry")
+                 (:file "test-ecs")
                  (:file "test-three" :depends-on ("utils" "2d-geometry"))))
                (:module "templates"
                 :components

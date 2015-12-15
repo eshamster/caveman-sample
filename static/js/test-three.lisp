@@ -57,6 +57,7 @@
 
 (defun js-main ()
   (with-use-ps-pack (:caveman-sample.js.2d-geometry
+                     :caveman-sample.js.test-ecs
                      :this)
     (defvar is-keydown false)
     (window.add-event-listener "keydown" (lambda (e) (setf is-keydown true)))
