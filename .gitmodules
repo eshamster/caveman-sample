@@ -1,3 +1,6 @@
 [submodule "static/js/ps-experiment"]
 	path = submodules/ps-experiment
 	url = https://github.com/eshamster/ps-experiment.git
+[submodule "submodules/cl-ps-ecs"]
+	path = submodules/cl-ps-ecs
+	url = https://github.com/eshamster/cl-ps-ecs.git

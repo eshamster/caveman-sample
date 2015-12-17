@@ -25,6 +25,7 @@
                ;; for static JS
                :parenscript
                :ps-experiment
+               :cl-ps-ecs
 
                ;; for DB
                :datafly
@@ -41,7 +42,8 @@
                 :components
                 ((:file "utils")
                  (:file "test-angular" :depends-on ("utils"))
-                 (:file "2d-geometry" :depends-on ("utils"))
+                 (:file "2d-geometry")
+                 (:file "test-ecs")
                  (:file "test-three" :depends-on ("utils" "2d-geometry"))))
                (:module "templates"
                 :components
