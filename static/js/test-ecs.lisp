@@ -19,7 +19,7 @@
 (defstruct.ps+ (point-2d (:include vector-2d)))
 (defstruct.ps+ (speed-2d (:include vector-2d)))
 
-(defstruct.ps (model-2d (:include ecs-component)) model depth enabled)
+(defstruct.ps (model-2d (:include ecs-component)) model depth)
 
 (defun.ps+ calc-abs-position (entity)
   (labels ((rec (result parent)
@@ -49,6 +49,16 @@
                                (point-2d-y new-pos)
                                (model-2d-depth model-2d)))))))))
 
+(defun.ps register-draw-model-system (scene)
+  (register-ecs-system "draw2d"
+                       (make-draw-model-system
+                        :add-entity-hook (lambda (entity)
+                                           (with-ecs-components (model-2d) entity
+                                             (scene.add (model-2d-model model-2d))))
+                        :delete-entity-hook (lambda (entity)
+                                           (with-ecs-components (model-2d) entity
+                                             (scene.remove (model-2d-model model-2d))))))))
+
 (defstruct.ps+
     (move-system
      (:include ecs-system
@@ -60,5 +70,4 @@
 
 (def-top-level-form.ps
     "register test systems"
-  (register-ecs-system "draw2d" (make-draw-model-system))
   (register-ecs-system "move2d" (make-move-system)))
