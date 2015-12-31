@@ -57,7 +57,7 @@
                                              (scene.add (model-2d-model model-2d))))
                         :delete-entity-hook (lambda (entity)
                                            (with-ecs-components (model-2d) entity
-                                             (scene.remove (model-2d-model model-2d))))))))
+                                             (scene.remove (model-2d-model model-2d)))))))
 
 (defstruct.ps+
     (move-system
