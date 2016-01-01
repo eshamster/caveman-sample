@@ -60,7 +60,7 @@
          (height 400)
          (camera (init-camera width height))
          (renderer (new #j.THREE.WebGLRenderer#)))
-    (register-draw-model-system scene)
+    (register-default-systems scene)
     (renderer.set-size width height)
     (document.body.append-child renderer.dom-element)
     (let ((light (new (#j.THREE.DirectionalLight# 0xffffff))))

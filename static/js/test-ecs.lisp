@@ -36,7 +36,6 @@
 
 ;; --- systems --- ;;
 
-;; [WIP]
 (defstruct.ps
     (draw-model-system
      (:include ecs-system
@@ -49,16 +48,6 @@
                                (point-2d-y new-pos)
                                (model-2d-depth model-2d)))))))))
 
-(defun.ps register-draw-model-system (scene)
-  (register-ecs-system "draw2d"
-                       (make-draw-model-system
-                        :add-entity-hook (lambda (entity)
-                                           (with-ecs-components (model-2d) entity
-                                             (scene.add (model-2d-model model-2d))))
-                        :delete-entity-hook (lambda (entity)
-                                           (with-ecs-components (model-2d) entity
-                                             (scene.remove (model-2d-model model-2d)))))))
-
 (defstruct.ps+
     (move-system
      (:include ecs-system
@@ -68,6 +57,13 @@
                             (incf (point-2d-x point-2d) (speed-2d-x speed-2d))
                             (incf (point-2d-y point-2d) (speed-2d-y speed-2d))))))))
 
-(def-top-level-form.ps
-    "register test systems"
+(defun.ps register-default-systems (scene)
+  (register-ecs-system "draw2d"
+                       (make-draw-model-system
+                        :add-entity-hook (lambda (entity)
+                                           (with-ecs-components (model-2d) entity
+                                             (scene.add (model-2d-model model-2d))))
+                        :delete-entity-hook (lambda (entity)
+                                              (with-ecs-components (model-2d) entity
+                                                (scene.remove (model-2d-model model-2d))))))
   (register-ecs-system "move2d" (make-move-system)))
