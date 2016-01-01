@@ -46,10 +46,12 @@
 
     (add-ecs-component (make-model-2d :model (make-solid-rect :width 40 :height 30
                                                               :color 0x00ff00)
-                                      :depth -20)
+                                      :depth 1.1
+                                      :center (make-vector-2d :x 20 :y 15))
                        child)
     (add-ecs-component (make-speed-2d :x 0.4) child)
-    (add-ecs-component (make-point-2d :x 20 :y 30) child)
+    (add-ecs-component (make-point-2d) child)
+    (add-ecs-component (make-rotate-2d :speed (/ PI 120) :r 0) child)
     
     (add-ecs-entity parent)
     (add-ecs-entity child parent)))
