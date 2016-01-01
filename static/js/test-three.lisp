@@ -59,6 +59,7 @@
       (add-ecs-component point entity)
       (add-ecs-component speed entity)
       (add-ecs-entity entity))
+    (refresh-entity-display)
     (labels ((render-loop ()
                (request-animation-frame render-loop)
                (renderer.render scene camera)
@@ -67,6 +68,7 @@
 
 (defun js-main ()
   (with-use-ps-pack (:caveman-sample.js.2d-geometry
+                     :caveman-sample.js.test-ecs-tools
                      :caveman-sample.js.test-ecs
                      :this)
     (defvar is-keydown false)

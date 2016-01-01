@@ -17,9 +17,11 @@
             (:title "Test ThreeJs")
             (:meta :charset "UTF-8")
             (:script :src "https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js" nil)
-            (:script :src (load-ps "test-three") nil))
+            (:script :src (load-ps "test-three") nil)
+            (:link :rel "stylesheet" :type "text/css" :href "css/test-three.css"))
            (:body
             (:div (:a :href "/" "Top"))
             (:br)
-            (:div "キーを押すと最初の位置に戻ります")
+            (:div "Entityのリスト"
+                  (:dl :id "entity-tree"))
             (:br)))))
