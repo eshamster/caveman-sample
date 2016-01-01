@@ -6,6 +6,7 @@
         :cl-ps-ecs
         :parenscript)
   (:import-from :ps-experiment
+                :defmacro.ps
                 :defmacro.ps+
                 :defun.ps
                 :enable-ps-experiment-syntax))
@@ -13,19 +14,33 @@
 
 (enable-ps-experiment-syntax)
 
+(defmacro.ps create-html-element (tag &key id html class)
+  `(let ((element (document.create-element ,tag)))
+     ,(when id
+            `(setf element.id ,id))
+     ,(when class
+            (if (atom class)
+                `(element.class-list.add ,class)
+                `(dolist (cls ,class)
+                   (element.class-list.add cls))))
+     ,(when html
+            `(setf #j.element.innerHTML# ,html))
+     element))
+
 (defun.ps refresh-entity-display ()
   (let ((tree (document.query-selector "#entity-tree"))
         (test-obj (make-point-2d)))
     (do-ecs-entities entity
-      (let ((entity-div (document.create-element "dt")))
+      (let* ((id (ecs-entity-id entity))
+             (entity-div (create-html-element
+                          "dt"
+                          :id (concatenate 'string "Entity" id)
+                          :html (concatenate 'string "Entity (ID: " id ")")
+                          :class '("entity" "tree"))))
         (tree.append-child entity-div)
-        (setf #j.entity-div.innerHTML# (concatenate 'string
-                                                    "Entity (ID: "
-                                                    (ecs-entity-id entity)
-                                                    ")"))
-        (entity-div.class-list.add "entity" "tree")
         (do-ecs-components-of-entity (component entity)
-          (let ((component-div (document.create-element "dd")))
-            (component-div.class-list.add "component" "tree")
-            (setf #j.component-div.innerHTML# component.constructor.name)
+          (let ((component-div (create-html-element
+                                "dd"
+                                :html component.constructor.name
+                                :class '("component" "tree"))))
             (tree.append-child component-div)))))))
