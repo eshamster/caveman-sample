@@ -15,7 +15,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun make-push-vertices (vertices raw-vertex-lst)
     `((@ ,vertices push) ,@(mapcar (lambda (v)
-                                     `(new (#j.THREE.Vector3# ,@(append v '(z)))))
+                                     `(new (#j.THREE.Vector3# ,@(append v '(0)))))
                                    raw-vertex-lst)))
   (defun make-push-faces (faces raw-face-lst)
     `((@ ,faces push) ,@ (mapcar (lambda (face)
