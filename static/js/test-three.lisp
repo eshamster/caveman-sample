@@ -34,27 +34,51 @@
     (camera.position.set (/ width 2) (/ height 2) z)
     camera))
 
-(defun.ps make-sample-entities ()
+(defun.ps make-sample-move-entities ()
   (let ((parent (make-ecs-entity))
         (child (make-ecs-entity)))
+    ;; make parent
     (add-ecs-component (make-model-2d :model (make-wired-rect :width 450 :height 300
                                                               :color 0xff00ff)
                                       :depth 1)
                        parent)
     (add-ecs-component (make-point-2d) parent)
     (add-ecs-component (make-speed-2d :x 0.6 :y 0.4) parent)
-
+    ;; make child
     (add-ecs-component (make-model-2d :model (make-solid-rect :width 40 :height 30
                                                               :color 0x00ff00)
-                                      :depth 1.1
-                                      :center (make-vector-2d :x 20 :y 15))
+                                      :depth 1.1)
                        child)
+    (add-ecs-component (make-point-2d :center (make-vector-2d :x 20 :y 15)) child) 
     (add-ecs-component (make-speed-2d :x 0.4) child)
-    (add-ecs-component (make-point-2d) child)
-    (add-ecs-component (make-rotate-2d :speed (/ PI 120) :r 0) child)
-    
+    ;; register
     (add-ecs-entity parent)
     (add-ecs-entity child parent)))
+
+(defun.ps make-sample-rotate-entities ()
+  (let ((parent (make-ecs-entity))
+        (parent-r 50)
+        (child (make-ecs-entity))
+        (child-r 25)
+        (child-dist 80))
+    ;; make parent
+    (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :r parent-r :n 6 :color 0x00ffff)
+                                      :depth 1.5)
+                       parent)
+    (add-ecs-component (make-point-2d :x 300 :y 200 :center (make-vector-2d :x parent-r :y parent-r)) parent)
+    (add-ecs-component (make-rotate-2d :speed (/ PI 120) :r 0) parent)
+    ;; make regular child
+    (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :r child-r :n 6 :color 0x00ffff)
+                                      :depth 1.5)
+                       child)
+    (add-ecs-component (make-point-2d :x child-dist :center (make-vector-2d :x child-r :y child-r)) child)
+    ;; register
+    (add-ecs-entity parent)
+    (add-ecs-entity child parent)))
+
+(defun.ps make-sample-entities ()
+  (make-sample-move-entities)
+  (make-sample-rotate-entities))
 
 (defun.ps main ()
   (let* ((scene (new (#j.THREE.Scene#)))
@@ -69,8 +93,6 @@
       (light.position.set 0 0.7 0.7)
       (scene.add light))
     (scene.add (make-line :pos-a '(0 0) :pos-b '(600 400) :color 0x00ff00 :z 1))
-    (dotimes (i 3)
-      (scene.add (make-wired-regular-polygon :r 50 :n 6 :start-angle (* i 30) :color 0x00ffff :z 2)))
     (make-sample-entities)
     (refresh-entity-display)
     (labels ((render-loop ()

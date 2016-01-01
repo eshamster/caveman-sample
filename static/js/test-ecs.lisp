@@ -16,12 +16,13 @@
 ;; --- components --- ;;
 
 (defstruct.ps+ (vector-2d (:include ecs-component)) (x 0) (y 0))
-(defstruct.ps+ (point-2d (:include vector-2d)))
+(defstruct.ps+ (point-2d (:include vector-2d)) (center (make-vector-2d)) (angle 0))
 (defstruct.ps+ (speed-2d (:include vector-2d)))
 
-(defstruct.ps+ (rotate-2d (:include ecs-component)) (speed 0) (angle 0) (r 0))
+;; rot-offset (rotate offset) is defined as relative value from point-2d-center
+(defstruct.ps+ (rotate-2d (:include ecs-component)) (speed 0) (angle 0) (rot-offset (make-vector-2d)))
 
-(defstruct.ps (model-2d (:include ecs-component)) model depth (center (make-vector-2d)))
+(defstruct.ps+ (model-2d (:include ecs-component)) model depth)
 
 (defun.ps+ vector-abs (vector)
   (sqrt (+ (expt (vector-2d-x vector) 2)
@@ -38,12 +39,18 @@
   (incf (vector-2d-y target-vec) (vector-2d-y diff-vec))
   target-vec)
 
-(defun.ps+ calc-abs-position (entity)
+(defun.ps+ decf-vector (target-vec diff-vec)
+  (decf (vector-2d-x target-vec) (vector-2d-x diff-vec))
+  (decf (vector-2d-y target-vec) (vector-2d-y diff-vec))
+  target-vec)
+
+(defun.ps+ calc-model-position (entity)
   (labels ((rec (result parent)
              (if parent
                  (let ((pos (get-ecs-component 'point-2d parent)))
                    (when pos
-                     (incf-vector result pos))
+                     (incf-vector result pos)
+                     (decf-vector result (point-2d-center pos)))
                    (rec result (ecs-entity-parent parent)))
                  result)))
     (unless (get-ecs-component 'point-2d entity)
@@ -57,13 +64,14 @@
      (:include ecs-system
                (target-component-types '(point-2d model-2d))
                (process (lambda (entity)
-                          (with-ecs-components (model-2d) entity
-                            (let ((new-pos (calc-abs-position entity)))
-                              (with-slots (model center) model-2d
+                          (with-ecs-components (model-2d point-2d) entity
+                            (let ((new-pos (calc-model-position entity)))
+                              (with-slots (model) model-2d
                                 (model.position.set
-                                 (- (point-2d-x new-pos) (vector-2d-x center))
-                                 (- (point-2d-y new-pos) (vector-2d-y center))
-                                 (model-2d-depth model-2d))))))))))
+                                 (point-2d-x new-pos)
+                                 (point-2d-y new-pos)
+                                 (model-2d-depth model-2d)) 
+                                (setf model.rotation.z (point-2d-angle point-2d))))))))))
 
 (defstruct.ps+
     (move-system
@@ -91,21 +99,19 @@
                                   (* r sin-now))
          increase))))
 
-(defstruct.ps
+(defstruct.ps+
     (rotate-system
      (:include ecs-system
                (target-component-types '(point-2d rotate-2d))
                (process (lambda (entity)
                           (with-ecs-components (point-2d rotate-2d) entity
-                            (with-slots (speed angle r) rotate-2d
-                              (incf-rotate-diff point-2d r angle speed)
-                              (let ((model-2d (get-ecs-component 'model-2d entity)))
-                                (when model-2d
-                                  (with-slots (model center) model-2d
-                                    (incf-rotate-diff point-2d (vector-abs center) (+ angle (vector-angle center)) speed
-                                                      :increase nil)
-                                    (incf model.rotation.z (rotate-2d-speed rotate-2d)))))
-                              (incf angle speed))))))))
+                            (with-slots (speed (rot-angle angle) rot-offset) rotate-2d
+                              (incf-rotate-diff point-2d (vector-abs rot-offset) (+ rot-angle (vector-angle rot-offset)) speed)
+                              (with-slots (center angle) point-2d
+                                (incf angle speed)
+                                (incf-rotate-diff point-2d (vector-abs center) (+ angle (vector-angle center)) speed
+                                                      :increase nil))
+                              (incf rot-angle speed))))))))
 
 (defun.ps register-default-systems (scene)
   (register-ecs-system "draw2d"
