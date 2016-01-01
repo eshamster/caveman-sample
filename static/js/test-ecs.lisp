@@ -20,6 +20,9 @@
 (defstruct.ps+ (speed-2d (:include vector-2d)))
 
 (defstruct.ps (model-2d (:include ecs-component)) model depth)
+(defun.ps+ incf-vector (target-vec diff-vec)
+  (incf (vector-2d-x target-vec) (vector-2d-x diff-vec))
+  (incf (vector-2d-y target-vec) (vector-2d-y diff-vec)))
 
 (defun.ps+ calc-abs-position (entity)
   (labels ((rec (result parent)
@@ -54,8 +57,8 @@
                (target-component-types '(point-2d speed-2d))
                (process (lambda (entity)
                           (with-ecs-components (point-2d speed-2d) entity
-                            (incf (point-2d-x point-2d) (speed-2d-x speed-2d))
-                            (incf (point-2d-y point-2d) (speed-2d-y speed-2d))))))))
+                            (incf-vector point-2d speed-2d)))))))
+
 
 (defun.ps register-default-systems (scene)
   (register-ecs-system "draw2d"
