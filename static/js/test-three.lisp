@@ -51,6 +51,7 @@
                        child)
     (add-ecs-component (make-point-2d :center (make-vector-2d :x 20 :y 15)) child) 
     (add-ecs-component (make-speed-2d :x 0.4) child)
+    (add-ecs-component (make-rotate-2d :speed (/ PI 120)) child)
     ;; register
     (add-ecs-entity parent)
     (add-ecs-entity child parent)))
@@ -60,21 +61,33 @@
         (parent-r 50)
         (child (make-ecs-entity))
         (child-r 25)
-        (child-dist 80))
+        (child-dist 120)
+        (gchild (make-ecs-entity))
+        (gchild-r 15)
+        (gchild-dist 50))
     ;; make parent
     (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :r parent-r :n 6 :color 0x00ffff)
-                                      :depth 1.5)
+                                      :depth 0.5)
                        parent)
     (add-ecs-component (make-point-2d :x 300 :y 200 :center (make-vector-2d :x parent-r :y parent-r)) parent)
-    (add-ecs-component (make-rotate-2d :speed (/ PI 120) :r 0) parent)
-    ;; make regular child
+    (add-ecs-component (make-rotate-2d :speed (/ PI 120)) parent)
+    ;; make child
     (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :r child-r :n 6 :color 0x00ffff)
-                                      :depth 1.5)
+                                      :depth 0.5)
                        child)
     (add-ecs-component (make-point-2d :x child-dist :center (make-vector-2d :x child-r :y child-r)) child)
+    (add-ecs-component (make-rotate-2d :speed (* -1 (/ PI 120))) child)
+    (add-ecs-component (make-rotate-2d :speed (/ PI 360) :rot-offset (make-vector-2d :x child-dist)) child)
+    ;; make grandchild
+    (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :r gchild-r :n 6 :color 0x00ffff)
+                                      :depth 0.5)
+                       gchild)
+    (add-ecs-component (make-point-2d :x gchild-dist :center (make-vector-2d :x gchild-r :y gchild-r)) gchild)
+    (add-ecs-component (make-rotate-2d :speed (* -1 (/ PI 360)) :rot-offset (make-vector-2d :x gchild-dist)) gchild)
     ;; register
     (add-ecs-entity parent)
-    (add-ecs-entity child parent)))
+    (add-ecs-entity child parent)
+    (add-ecs-entity gchild child)))
 
 (defun.ps make-sample-entities ()
   (make-sample-move-entities)

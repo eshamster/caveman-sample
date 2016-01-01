@@ -50,7 +50,10 @@
                  (let ((pos (get-ecs-component 'point-2d parent)))
                    (when pos
                      (incf-vector result pos)
-                     (decf-vector result (point-2d-center pos)))
+                     (with-slots (center angle) pos
+                       (if (eq entity parent)
+                           (decf-vector result center)
+                           (incf-rotate-diff result (vector-abs center) (vector-angle center) angle))))
                    (rec result (ecs-entity-parent parent)))
                  result)))
     (unless (get-ecs-component 'point-2d entity)
