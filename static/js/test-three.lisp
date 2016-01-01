@@ -76,14 +76,14 @@
                                       :depth 0.5)
                        child)
     (add-ecs-component (make-point-2d :x child-dist :center (make-vector-2d :x child-r :y child-r)) child)
-    (add-ecs-component (make-rotate-2d :speed (* -1 (/ PI 120))) child)
+    (add-ecs-component (make-rotate-2d :speed (* -1 (/ PI 60))) child)
     (add-ecs-component (make-rotate-2d :speed (/ PI 360) :rot-offset (make-vector-2d :x child-dist)) child)
     ;; make grandchild
     (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :r gchild-r :n 6 :color 0x00ffff)
                                       :depth 0.5)
                        gchild)
     (add-ecs-component (make-point-2d :x gchild-dist :center (make-vector-2d :x gchild-r :y gchild-r)) gchild)
-    (add-ecs-component (make-rotate-2d :speed (* -1 (/ PI 360)) :rot-offset (make-vector-2d :x gchild-dist)) gchild)
+    (add-ecs-component (make-rotate-2d :speed (* -1 (/ PI 300)) :rot-offset (make-vector-2d :x gchild-dist)) gchild)
     ;; register
     (add-ecs-entity parent)
     (add-ecs-entity child parent)

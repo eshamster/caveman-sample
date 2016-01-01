@@ -107,14 +107,16 @@
      (:include ecs-system
                (target-component-types '(point-2d rotate-2d))
                (process (lambda (entity)
-                          (with-ecs-components (point-2d rotate-2d) entity
-                            (with-slots (speed (rot-angle angle) rot-offset) rotate-2d
-                              (incf-rotate-diff point-2d (vector-abs rot-offset) (+ rot-angle (vector-angle rot-offset)) speed)
-                              (with-slots (center angle) point-2d
-                                (incf angle speed)
-                                (incf-rotate-diff point-2d (vector-abs center) (+ angle (vector-angle center)) speed
+                          (with-ecs-components (point-2d) entity
+                            (do-ecs-components-of-entity (rotate-2d entity)
+                              (when (rotate-2d-p rotate-2d)
+                                (with-slots (speed (rot-angle angle) rot-offset) rotate-2d
+                                  (incf-rotate-diff point-2d (vector-abs rot-offset) (+ rot-angle (vector-angle rot-offset)) speed)
+                                  (with-slots (center angle) point-2d
+                                    (incf angle speed)
+                                    (incf-rotate-diff point-2d (vector-abs center) (+ angle (vector-angle center)) speed
                                                       :increase nil))
-                              (incf rot-angle speed))))))))
+                                  (incf rot-angle speed))))))))))
 
 (defun.ps register-default-systems (scene)
   (register-ecs-system "draw2d"
