@@ -19,7 +19,10 @@
     (do-ecs-entities entity
       (let ((entity-div (document.create-element "dt")))
         (tree.append-child entity-div)
-        (setf #j.entity-div.innerHTML# "Entity")
+        (setf #j.entity-div.innerHTML# (concatenate 'string
+                                                    "Entity (ID: "
+                                                    (ecs-entity-id entity)
+                                                    ")"))
         (entity-div.class-list.add "entity" "tree")
         (do-ecs-components-of-entity (component entity)
           (let ((component-div (document.create-element "dd")))
