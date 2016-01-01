@@ -62,7 +62,7 @@
 (defstruct.ps+
     (move-system
      (:include ecs-system
-               (target-component-types '(model-2d))
+               (target-component-types '(point-2d speed-2d))
                (process (lambda (entity)
                           (with-ecs-components (point-2d speed-2d) entity
                             (incf (point-2d-x point-2d) (speed-2d-x speed-2d))
