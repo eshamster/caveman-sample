@@ -11,18 +11,6 @@
                 :with-use-ps-pack))
 (in-package :caveman-sample.js.test-three)
 
-(defun.ps rotate-mesh (mesh)
-  (return)
-  (with-slots ((rot rotation) (pos position)) mesh
-    (rot.set 0
-             (+ rot.y 0.01)
-             (+ rot.z 0.01))
-    (if is-keydown
-        (pos.set 0 0 0)
-        (pos.set (+ pos.x 0.1)
-                 (+ pos.y 0.1)
-                 0))))
-
 (defun.ps init-camera (width height)
   (let* ((fov 60)
          (rad-fov (/ (* fov PI) 180))
