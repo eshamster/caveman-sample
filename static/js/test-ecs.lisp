@@ -53,7 +53,7 @@
                      (with-slots (center angle) pos
                        (if (eq entity parent)
                            (decf-vector result center)
-                           (incf-rotate-diff result (vector-abs center) (vector-angle center) angle))))
+                           (incf-rotate-diff result center 0 angle))))
                    (rec result (ecs-entity-parent parent)))
                  result)))
     (unless (get-ecs-component 'point-2d entity)
@@ -84,23 +84,22 @@
                           (with-ecs-components (point-2d speed-2d) entity
                             (incf-vector point-2d speed-2d)))))))
 
-(defun.ps+ incf-rotate-diff (vector r now-angle diff-angle &key (increase t))
-  (macrolet ((f (place value increase)
-               `(if ,increase
-                    (incf ,place ,value)
-                    (decf ,place ,value))))
-    (let ((cos-now (cos now-angle))
-          (sin-now (sin now-angle))
-          (cos-diff (cos diff-angle))
-          (sin-diff (sin diff-angle)))
-      (f (vector-2d-x vector) (- (* r cos-now cos-diff)
-                                 (* r sin-now sin-diff)
-                                 (* r cos-now))
-         increase)
-      (f (vector-2d-y vector) (-  (+ (* r sin-now cos-diff)
-                                     (* r cos-now sin-diff))
-                                  (* r sin-now))
-         increase))))
+(defun.ps+ incf-rotate-diff (vector offset-vector now-angle diff-angle)
+  (let* ((r (vector-abs offset-vector))
+         (now-angle-with-offset (+ now-angle (vector-angle offset-vector)))
+         (cos-now (cos now-angle-with-offset))
+         (sin-now (sin now-angle-with-offset))
+         (cos-diff (cos diff-angle))
+         (sin-diff (sin diff-angle)))
+    (incf (vector-2d-x vector) (- (* r cos-now cos-diff)
+                                  (* r sin-now sin-diff)
+                                  (* r cos-now)))
+    (incf (vector-2d-y vector) (-  (+ (* r sin-now cos-diff)
+                                      (* r cos-now sin-diff))
+                                   (* r sin-now)))))
+
+(defun.ps+ decf-rotate-diff (vector offset-vector now-angle diff-angle)
+  (incf-rotate-diff vector offset-vector now-angle (* -1 diff-angle)))
 
 (defstruct.ps+
     (rotate-system
@@ -111,12 +110,19 @@
                             (do-ecs-components-of-entity (rotate-2d entity)
                               (when (rotate-2d-p rotate-2d)
                                 (with-slots (speed (rot-angle angle) rot-offset) rotate-2d
-                                  (incf-rotate-diff point-2d (vector-abs rot-offset) (+ rot-angle (vector-angle rot-offset)) speed)
+                                  (incf-rotate-diff point-2d rot-offset rot-angle speed)
                                   (with-slots (center angle) point-2d
                                     (incf angle speed)
-                                    (incf-rotate-diff point-2d (vector-abs center) (+ angle (vector-angle center)) speed
-                                                      :increase nil))
+                                    (decf-rotate-diff point-2d center angle speed))
                                   (incf rot-angle speed))))))))))
+
+(defstruct.ps+
+    (script-system
+     (:include ecs-system
+               (target-component-types '(script-2d))
+               (process (lambda (entity)
+                          (with-ecs-components (script-2d) entity
+                            (funcall (script-2d-func script-2d) entity)))))))
 
 (defun.ps register-default-systems (scene)
   (register-ecs-system "draw2d"
