@@ -32,16 +32,17 @@
          (eq value :up-now))))
 
 (defun.ps process-input ()
-  (let ((div (document.query-selector "#debug")))
-    (maphash (lambda (k v)
-               (symbol-macrolet ((value (gethash k key-status)))
-                 (if v
-                     (case value
-                       (:down-now (setf value :down))
-                       (:down)
-                       (t (setf value :down-now)))
-                     (case value
-                       (:up-now (setf value :up))
-                       (:up)
-                       (t (setf value :up-now))))))
-             keyboard.key-codes)))
+
+  (maphash (lambda (k v)
+             (symbol-macrolet ((value (gethash k key-status)))
+               (if v
+                   (case value
+                     (:down-now (setf value :down))
+                     (:down)
+                     (t (setf value :down-now)))
+                   (case value
+                     (:up-now (setf value :up))
+                     (:up)
+                     (t (setf value :up-now))))))
+           keyboard.key-codes))
+
