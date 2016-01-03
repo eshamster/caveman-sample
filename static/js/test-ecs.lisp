@@ -22,7 +22,7 @@
 ;; rot-offset (rotate offset) is defined as relative value from point-2d-center
 (defstruct.ps+ (rotate-2d (:include ecs-component)) (speed 0) (angle 0) (rot-offset (make-vector-2d)))
 
-(defstruct.ps+ (model-2d (:include ecs-component)) model depth)
+(defstruct.ps+ (model-2d (:include ecs-component)) model (depth 0))
 
 (defstruct.ps+ (script-2d (:include ecs-component)) (func (lambda (entity) entity)))
 

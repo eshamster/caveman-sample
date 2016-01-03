@@ -54,10 +54,11 @@
 (defvar.ps _mouse-y -100)
 
 (defun.ps on-mouse-move-event (e)
-  (let ((debug (document.query-selector "#debug"))
-        (renderer (document.query-selector "#renderer")))
+  (let* ((renderer (document.query-selector "#renderer"))
+         (canvas (renderer.query-selector "canvas")))
     (setf _mouse-x (- e.client-x renderer.offset-left))
-    (setf _mouse-y (- e.client-y renderer.offset-top))
-    (setf #j.debug.innerHTML# (concatenate 'string
-                                           "X: " _mouse-x
-                                           "Y: " _mouse-y))))
+    (setf _mouse-y (- canvas.height
+                      (- e.client-y renderer.offset-top)))))
+
+(defun.ps get-mouse-x () _mouse-x)
+(defun.ps get-mouse-y () _mouse-y)

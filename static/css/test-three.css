@@ -42,3 +42,7 @@ dd.not-selected {
   height: 0px;
   border: none;
 }
+
+canvas {
+    cursor: none;
+}

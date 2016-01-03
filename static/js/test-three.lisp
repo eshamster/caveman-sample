@@ -85,9 +85,25 @@
     (add-ecs-entity child parent)
     (add-ecs-entity gchild child)))
 
+(defun.ps make-mouse-pointer ()
+  (let ((pointer (make-ecs-entity))
+        (r 5))
+    (add-ecs-component (make-point-2d :center (make-vector-2d :x r :y r)) pointer)
+    (add-ecs-component (make-model-2d :model (make-wired-regular-polygon :n 60 :color 0xff0000
+                                                                         :r r)
+                                      :depth 1)
+                       pointer)
+    (add-ecs-component (make-script-2d :func (lambda (entity)
+                                               (with-ecs-components (point-2d) entity
+                                                 (setf point-2d.x (get-mouse-x))
+                                                 (setf point-2d.y (get-mouse-y)))))
+                       pointer)
+    (add-ecs-entity pointer)))
+
 (defun.ps make-sample-entities ()
   (make-sample-move-entities)
-  (make-sample-rotate-entities))
+  (make-sample-rotate-entities)
+  (make-mouse-pointer))
 
 (defun.ps main ()
   (let* ((scene (new (#j.THREE.Scene#)))
