@@ -99,12 +99,14 @@
     (labels ((render-loop ()
                (request-animation-frame render-loop)
                (renderer.render scene camera)
+               (process-input)
                (ecs-main)))
       (render-loop))))
 
 (defun js-main ()
   (with-use-ps-pack (:caveman-sample.js.2d-geometry
                      :caveman-sample.js.test-ecs-tools
+                     :caveman-sample.js.test-ecs-input
                      :caveman-sample.js.test-ecs
                      :this)
     (defvar is-keydown false)

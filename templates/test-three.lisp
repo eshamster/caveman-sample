@@ -17,6 +17,7 @@
             (:title "Test ThreeJs")
             (:meta :charset "UTF-8")
             (:script :src "https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js" nil)
+            (:script :src "js/copied/threex.keyboardstate.js" nil)
             (:script :src (load-ps "test-three") nil)
             (:link :rel "stylesheet" :type "text/css" :href "css/test-three.css"))
            (:body
@@ -24,4 +25,5 @@
             (:br)
             (:div "Entityのリスト"
                   (:dl :id "entity-tree"))
+            (:div :id "debug" "Debug")
             (:br)))))

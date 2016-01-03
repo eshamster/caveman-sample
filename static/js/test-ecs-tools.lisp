@@ -5,6 +5,7 @@
         :ps-experiment
         :cl-ps-ecs
         :parenscript)
+  (:export :create-html-element)
   (:import-from :ps-experiment
                 :defmacro.ps
                 :defmacro.ps+

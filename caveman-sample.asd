@@ -45,6 +45,7 @@
                  (:file "2d-geometry")
                  (:file "test-ecs")
                  (:file "test-ecs-tools")
+                 (:file "test-ecs-input" :depends-on ("test-ecs-tools"))
                  (:file "test-three" :depends-on ("utils" "2d-geometry"))))
                (:module "templates"
                 :components

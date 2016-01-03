@@ -132,6 +132,14 @@ THREEx.KeyboardState.prototype._onKeyChange	= function(event)
 	this.modifiers['meta']	= event.metaKey
 }
 
+THREEx.KeyboardState.prototype.keynameToKeycode	= function(key){
+	if( Object.keys(THREEx.KeyboardState.ALIAS).indexOf( key ) != -1 ){
+		return THREEx.KeyboardState.ALIAS[key];
+	}else {
+		return key.toUpperCase().charCodeAt(0);
+	}
+}
+
 /**
  * query keyboard state to know if a key is pressed of not
  *
@@ -145,13 +153,11 @@ THREEx.KeyboardState.prototype.pressed	= function(keyDesc){
 		var pressed	= false
 		if( THREEx.KeyboardState.MODIFIERS.indexOf( key ) !== -1 ){
 			pressed	= this.modifiers[key];
-		}else if( Object.keys(THREEx.KeyboardState.ALIAS).indexOf( key ) != -1 ){
-			pressed	= this.keyCodes[ THREEx.KeyboardState.ALIAS[key] ];
-		}else {
-			pressed	= this.keyCodes[key.toUpperCase().charCodeAt(0)]
+		}else{
+			pressed	= this.keyCodes[ this.keynameToKeycode( key ) ];
 		}
 		if( !pressed)	return false;
-	};
+	}
 	return true;
 }
 
