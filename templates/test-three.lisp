@@ -23,7 +23,8 @@
            (:body
             (:div (:a :href "/" "Top"))
             (:br)
-            (:div "Entityのリスト"
-                  (:dl :id "entity-tree"))
+            (:div :id "renderer" nil)
             (:div :id "debug" "Debug")
-            (:br)))))
+            (:br)
+            (:div "Entityのリスト"
+                  (:dl :id "entity-tree"))))))

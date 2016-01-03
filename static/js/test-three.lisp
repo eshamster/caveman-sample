@@ -97,7 +97,7 @@
          (renderer (new #j.THREE.WebGLRenderer#)))
     (register-default-systems scene)
     (renderer.set-size width height)
-    (document.body.append-child renderer.dom-element)
+    ((@ ((@ document.query-selector) "#renderer") append-child) renderer.dom-element)
     (let ((light (new (#j.THREE.DirectionalLight# 0xffffff))))
       (light.position.set 0 0.7 0.7)
       (scene.add light))
