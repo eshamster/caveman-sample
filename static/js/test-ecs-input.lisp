@@ -33,7 +33,6 @@
 
 (defun.ps process-input ()
   (let ((div (document.query-selector "#debug")))
-    (setf #j.div.innerHTML# "")
     (maphash (lambda (k v)
                (symbol-macrolet ((value (gethash k key-status)))
                  (if v
@@ -45,8 +44,4 @@
                        (:up-now (setf value :up))
                        (:up)
                        (t (setf value :up-now))))))
-             keyboard.key-codes)
-    (div.append-child (create-html-element "div" :html (concatenate 'string "Is 'B' pressed: " (is-key-down :b))))
-    (div.append-child (create-html-element "div" :html (concatenate 'string "Is 'B' released: " (not (is-key-down :b)))))
-    (div.append-child (create-html-element "div" :html (concatenate 'string "Is 'B' pressed now: " (is-key-down-now :b))))
-    (div.append-child (create-html-element "div" :html (concatenate 'string "Is 'B' released now: " (is-key-up-now :b))))))
+             keyboard.key-codes)))

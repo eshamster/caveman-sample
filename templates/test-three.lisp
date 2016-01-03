@@ -24,7 +24,7 @@
             (:div (:a :href "/" "Top"))
             (:br)
             (:div :id "renderer" nil)
-            (:div :id "debug" "Debug")
+            (:div :id "debug" "Debug用領域")
             (:br)
             (:div "Entityのリスト"
                   (:dl :id "entity-tree"))))))
