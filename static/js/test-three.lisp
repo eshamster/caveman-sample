@@ -117,7 +117,4 @@
                      :caveman-sample.js.test-ecs-input
                      :caveman-sample.js.test-ecs
                      :this)
-    (defvar is-keydown false)
-    (window.add-event-listener "keydown" (lambda (e) (setf is-keydown true)))
-    (window.add-event-listener "keyup" (lambda (e) (setf is-keydown false)))
     (window.add-event-listener "DOMContentLoaded" main false))) 
