@@ -8,7 +8,9 @@
   (:import-from :ps-experiment
                 :setf-with
                 :defun.ps
-                :with-use-ps-pack))
+                :with-use-ps-pack)
+  (:import-from :cl-ps-ecs
+                :with-ecs-components))
 (in-package :caveman-sample.js.test-three)
 
 (defun.ps init-camera (width height)
@@ -32,6 +34,12 @@
                        parent)
     (add-ecs-component (make-point-2d) parent)
     (add-ecs-component (make-speed-2d :x 0.6 :y 0.4) parent)
+    (add-ecs-component (make-script-2d :func (lambda (entity)
+                                               (with-ecs-components (point-2d) entity
+                                                 (when (is-key-down-now :b)
+                                                   (setf point-2d.x 0)
+                                                   (setf point-2d.y 0)))))
+                       parent)
     ;; make child
     (add-ecs-component (make-model-2d :model (make-solid-rect :width 40 :height 30
                                                               :color 0x00ff00)

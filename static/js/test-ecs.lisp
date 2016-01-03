@@ -24,6 +24,10 @@
 
 (defstruct.ps+ (model-2d (:include ecs-component)) model depth)
 
+(defstruct.ps+ (script-2d (:include ecs-component)) (func (lambda (entity) entity)))
+
+;; - vector functions - ;;
+
 (defun.ps+ vector-abs (vector)
   (sqrt (+ (expt (vector-2d-x vector) 2)
            (expt (vector-2d-y vector) 2))))
@@ -134,4 +138,5 @@
                                               (with-ecs-components (model-2d) entity
                                                 (scene.remove (model-2d-model model-2d))))))
   (register-ecs-system "move2d" (make-move-system))
-  (register-ecs-system "rotate2d" (make-rotate-system)))
+  (register-ecs-system "rotate2d" (make-rotate-system))
+  (register-ecs-system "script2d" (make-script-system)))
