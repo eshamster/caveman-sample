@@ -117,4 +117,5 @@
                      :caveman-sample.js.test-ecs-input
                      :caveman-sample.js.test-ecs
                      :this)
+    (window.add-event-listener "mousemove" on-mouse-move-event)
     (window.add-event-listener "DOMContentLoaded" main false))) 

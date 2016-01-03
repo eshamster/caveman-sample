@@ -10,6 +10,8 @@
 
 (enable-ps-experiment-syntax)
 
+;; ---- keyboard ---- ;;
+
 (defvar.ps keyboard (new (#j.THREEx.KeyboardState#)))
 (defvar.ps key-status (make-hash-table))
 
@@ -46,3 +48,16 @@
                      (t (setf value :up-now))))))
            keyboard.key-codes))
 
+;; ---- mouse ---- ;;
+
+(defvar.ps _mouse-x -100)
+(defvar.ps _mouse-y -100)
+
+(defun.ps on-mouse-move-event (e)
+  (let ((debug (document.query-selector "#debug"))
+        (renderer (document.query-selector "#renderer")))
+    (setf _mouse-x (- e.client-x renderer.offset-left))
+    (setf _mouse-y (- e.client-y renderer.offset-top))
+    (setf #j.debug.innerHTML# (concatenate 'string
+                                           "X: " _mouse-x
+                                           "Y: " _mouse-y))))
