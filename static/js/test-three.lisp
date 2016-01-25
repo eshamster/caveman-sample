@@ -8,10 +8,13 @@
   (:import-from :ps-experiment
                 :setf-with
                 :defun.ps
+                :defvar.ps
                 :with-use-ps-pack)
   (:import-from :cl-ps-ecs
                 :with-ecs-components))
 (in-package :caveman-sample.js.test-three)
+
+(defvar.ps fps-stat (make-fps-stats))
 
 (defun.ps init-camera (width height)
   (let* ((fov 60)
@@ -105,6 +108,11 @@
   (make-sample-rotate-entities)
   (make-mouse-pointer))
 
+(defun.ps print-fps ()
+  (update-fps-stats fps-stat)
+  (let ((div (document.query-selector "#debug")))
+    (setf #j.div.innerHTML# (+ "FPS: " (calc-average-fps fps-stat)))))
+
 (defun.ps main ()
   (let* ((scene (new (#j.THREE.Scene#)))
          (width 600)
@@ -124,6 +132,7 @@
                (request-animation-frame render-loop)
                (renderer.render scene camera)
                (process-input)
+               (print-fps)
                (ecs-main)))
       (render-loop))))
 

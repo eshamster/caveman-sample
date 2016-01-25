@@ -45,3 +45,27 @@
                                 :html component.constructor.name
                                 :class '("component" "tree"))))
             (tree.append-child component-div)))))))
+
+(defstruct.ps fps-stats
+  (clock-store '())
+  (store-size 30)
+  (pointer 0)
+  (frame-count 0))
+
+(defun.ps update-fps-stats (stat)
+  (with-slots (clock-store store-size pointer frame-count) stat
+    (setf (aref clock-store pointer) (-date.now))
+    (incf pointer)
+    (when (>= pointer store-size)
+      (setf pointer 0))
+    (incf frame-count)))
+
+(defun.ps calc-average-fps (stat)
+  (with-slots (clock-store pointer store-size frame-count) stat
+    (if (>= frame-count store-size)
+        (let ((newest-pointer (1- pointer)))
+          (/ 1000.0
+             (/ (- (aref clock-store (if (>= newest-pointer 0) newest-pointer (1- store-size)))
+                 (aref clock-store pointer))
+                store-size)))
+        -1)))
