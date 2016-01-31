@@ -113,6 +113,11 @@
   (let ((div (document.query-selector "#debug")))
     (setf #j.div.innerHTML# (+ "FPS: " (calc-average-fps fps-stat)))))
 
+(defun.ps update ()
+  (process-input)
+  (print-fps)
+  (ecs-main))
+
 (defun.ps main ()
   (let* ((scene (new (#j.THREE.Scene#)))
          (width 600)
@@ -131,9 +136,7 @@
     (labels ((render-loop ()
                (request-animation-frame render-loop)
                (renderer.render scene camera)
-               (process-input)
-               (print-fps)
-               (ecs-main)))
+               (update)))
       (render-loop))))
 
 (defun js-main ()
