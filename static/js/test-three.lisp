@@ -5,8 +5,9 @@
         :parenscript)
   (:shadow :sb-debug
            :var)
+  (:import-from :ps-experiment.common-macros
+                :setf-with)
   (:import-from :ps-experiment
-                :setf-with
                 :defun.ps
                 :defvar.ps
                 :with-use-ps-pack)
