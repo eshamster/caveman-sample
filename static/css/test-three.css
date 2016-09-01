@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+body {
+  font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+}
+
+a:link {
+  color: #005585;
+  text-decoration: none;
+}
+a:visited {
+  color: purple;
+  font-weight: 600;
+}
+a:hover {
+  color: #b83800;
+  text-decoration: underline;
+}
+
+#main {
+  text-align: center;
+}
+
+dl {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+dt {
+  margin: auto;
+  background-color: #faf;
+}
+
+dd {
+  overflow: hidden;
+  margin: auto;
+  background-color: #fef;
+}
+
+dd.not-selected {
+  height: 0px;
+  border: none;
+}
+
+canvas {
+    cursor: none;
+}

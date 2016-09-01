@@ -15,7 +15,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun make-push-vertices (vertices raw-vertex-lst)
     `((@ ,vertices push) ,@(mapcar (lambda (v)
-                                     `(new (#j.THREE.Vector3# ,@(append v '(z)))))
+                                     `(new (#j.THREE.Vector3# ,@(append v '(0)))))
                                    raw-vertex-lst)))
   (defun make-push-faces (faces raw-face-lst)
     `((@ ,faces push) ,@ (mapcar (lambda (face)
@@ -61,7 +61,7 @@
 (def-wired-geometry make-wired-rect (width height)
   (push-vertices (0 0) (width 0) (width height) (0 height) (0 0)))
 
-(def-wired-geometry make-wired-regular-polygon (r n start-angle)
+(def-wired-geometry make-wired-regular-polygon (r n (start-angle 0))
   (dotimes (i (1+ n))
     (let ((angle (to-rad (+ (/ (* 360 i) n) start-angle))))
       (push-vertices ((+ r (* r (cos angle)))
